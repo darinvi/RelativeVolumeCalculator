@@ -1,18 +1,12 @@
-import finnhub
-import datetime,pytz,time
+import datetime,pytz
+from clients import client
 
-def client(symbol):
-    #returns time series for open,high,low,close,volume,time
-    epoch = int(time.time())
-    client = finnhub.Client(api_key="caq8suiad3iecj6adq7g")
-    data = client.stock_candles(symbol,"1",epoch-2000000,epoch)
-    return data
 
 def main(symbol):
     candles = getVolumeAndTime(symbol)
     candles = mapUnixToDate(candles)
     candles = getRegularTradingSession(candles)
-    calculateRelativeVolume(candles)
+    return calculateRelativeVolume(candles)
     
 def getVolumeAndTime(symbol):
     #only returns volume and time for the purposes of this program
@@ -53,7 +47,6 @@ def separateData(lst):
     return past_closes,today_closes
 
 def calculateAverageVolume(lst):
-    print(sum(lst))
     return sum(lst)/len(lst)
 
 def calculateRelativeVolume(lst):
@@ -62,7 +55,5 @@ def calculateRelativeVolume(lst):
     today_avg = calculateAverageVolume(today)
     rvol = today_avg/past_avg
     print(f"RVOL = {rvol}")
+    return rvol
 
-while True:
-    symbol = input("Symbol: ").upper()
-    main(symbol)
