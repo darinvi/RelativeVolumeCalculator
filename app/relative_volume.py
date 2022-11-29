@@ -1,8 +1,8 @@
 import datetime,pytz
-from clients import client
+from clients import finnhubClient
 
 
-def main(symbol):
+def RelativeVolumeMain(symbol):
     candles = getVolumeAndTime(symbol)
     candles = mapUnixToDate(candles)
     candles = getRegularTradingSession(candles)
@@ -10,10 +10,7 @@ def main(symbol):
     
 def getVolumeAndTime(symbol):
     #only returns volume and time for the purposes of this program
-    data = client(symbol)
-    if not len(data['t']) == len(data['v']):
-        print("finnhub wrong response")
-        #add recursion to main here
+    data = finnhubClient(symbol)
     filtered = [element for element in list(map(list,zip(list(data['v']),list(data['t']))))]
     return filtered
 
@@ -39,9 +36,8 @@ def getRegularTradingSession(lst):
     return current_time
 
 def separateData(lst):
-    #separate today's data from data for the past days so I can compare
-    #Only returns closes
-    rolling_days = list(dict.fromkeys([days[1].day for days in lst]))[-11:-1]
+    #separate today's data from data for the past days so I can compare. Only returns closes
+    rolling_days = list(dict.fromkeys([days[1].day for days in lst]))[-21:-1]
     past_closes = [item[0] for item in lst if item[1].day in rolling_days]
     today_closes = [item[0] for item in lst if item[1].day==lst[-1][1].day]
     return past_closes,today_closes
