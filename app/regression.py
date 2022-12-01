@@ -12,5 +12,5 @@ def showPlot(df):
 def calculateExpectedRange(fit,rvol,df):
     intercept,coef = fit.params
     atr_today = df['ATR'][-1]
-    print(f"E(TR): {intercept:.2f} + {coef:.2f} * {rvol:.2f} * {atr_today:.2f} = {intercept+coef*rvol*atr_today:.2f}")
+    print(f"E(TR): {intercept:.2f} + {coef:.2f} * {rvol:.2f} = {intercept+coef*rvol*atr_today:.2f}")
     print(f"Expected Range today: {intercept+coef*rvol:.2f} times the Average True Range ({atr_today})")
