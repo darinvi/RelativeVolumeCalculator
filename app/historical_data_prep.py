@@ -7,11 +7,13 @@ def historicalDataFrame(symbol):
     df = addTrueRanges(df)
     df = addAverageTrueRange(df)
     df = addRelativeRange(df)
+    # using rolling window 20 so I prefer to clean the first entries that haven't cought up.
+    df = df[20:]
     return df
 
 def addRelativeVolume(df):
     # volume and average volume are numeric, relative volume is a coefficient showing how much volume is done today relative to the average for the day.
-    df['Rvol'] = df['Volume']/df['Volume'].rolling(10,1).mean()
+    df['Rvol'] = df['Volume']/df['Volume'].rolling(20,1).mean()
     return df
 
 def addTrueRanges(df):
@@ -27,11 +29,10 @@ def addTrueRanges(df):
 
 def addAverageTrueRange(df):
     # average of the true ranges for an arbitrary period (20 data points in this case).
-    df["ATR"] = df["TR"].rolling(20,0).mean()
+    df["ATR"] = df["TR"].rolling(20,0,).mean()
     return df
 
 def addRelativeRange(df):
     # range and atr are numeric, relative range is a coefficient. Same logic as relative volume.
     df["RR"] = df["TR"]/df["ATR"]
-    print(df)
     return df
