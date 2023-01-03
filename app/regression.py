@@ -6,7 +6,7 @@ def regression(df,dep,indep):
     return result
 
 def showPlot(df):
-    df.plot.scatter(x="RR",y="Rvol")
+    df.plot.scatter(x="Rvol",y="RR")
     plt.show()
 
 def calculateExpectedRange(fit,rvol,df):

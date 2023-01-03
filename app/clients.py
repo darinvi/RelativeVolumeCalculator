@@ -1,6 +1,6 @@
 import finnhub,time,datetime
 import pandas_datareader.data as web
-
+import yfinance as yf
 
 def finnhubClient(symbol):
     #returns time series for open,high,low,close,volume,time
@@ -10,7 +10,8 @@ def finnhubClient(symbol):
     return data
 
 def yahooClient(symbol):
+    yf.pdr_override()
     start = datetime.datetime(2000,1,1)
     end = datetime.datetime(2022,12,31)
-    df = web.DataReader(symbol, 'yahoo', start, end)
+    df = web.get_data_yahoo(symbol,start, end)
     return df
